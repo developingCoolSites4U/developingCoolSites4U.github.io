@@ -1,0 +1,49 @@
+---
+interface Props {
+  text: string;
+  author: string;
+  rating: number;
+  serviceTag?: string;
+}
+
+const { text, author, rating, serviceTag } = Astro.props;
+---
+
+<div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm">
+  <!-- Stelle -->
+  <div class="flex gap-1 mb-4" aria-label={`Valutazione: ${rating} stelle su 5`}>
+    {Array.from({ length: 5 }).map((_, i) => (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill={i < rating ? '#F59E0B' : '#E5E7EB'}
+        stroke="none"
+        aria-hidden="true"
+      >
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>
+    ))}
+  </div>
+
+  <!-- Quote -->
+  <blockquote class="text-charcoal/80 leading-relaxed mb-6 text-sm md:text-base">
+    "{text}"
+  </blockquote>
+
+  <!-- Author + Tag -->
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-terracotta-100 flex items-center justify-center text-terracotta font-bold text-sm">
+        {author.charAt(0)}
+      </div>
+      <span class="font-semibold text-charcoal text-sm">{author}</span>
+    </div>
+
+    {serviceTag && (
+      <span class="text-xs px-3 py-1 rounded-full bg-sage-light/30 text-sage-dark font-medium">
+        {serviceTag}
+      </span>
+    )}
+  </div>
+</div>

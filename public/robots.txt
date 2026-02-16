@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://username.github.io/dentalbrixia_v2/sitemap-index.xml

@@ -1,0 +1,60 @@
+# ============================================================================
+# Deploy su GitHub Pages
+# ============================================================================
+# Questo workflow si attiva automaticamente ad ogni push su 'main'.
+# Per configurare:
+# 1. Vai su Settings > Pages del tuo repository
+# 2. Seleziona "GitHub Actions" come sorgente
+# 3. Aggiorna 'site' e 'base' in astro.config.mjs con i tuoi valori
+# ============================================================================
+
+name: Deploy su GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Installa dipendenze
+        run: npm ci
+
+      - name: Build del sito
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy su GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

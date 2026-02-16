@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-sans text-charcoal bg-cream;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif font-bold;
+    line-height: 1.2;
+  }
+
+  /* Scroll-triggered fade-in: JS aggiunge .is-visible */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .fade-in.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4
+           bg-terracotta text-white font-semibold rounded-brand
+           transition-all duration-200
+           hover:bg-terracotta-600 hover:shadow-lg hover:scale-[1.02]
+           focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terracotta;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4
+           border-2 border-terracotta text-terracotta font-semibold rounded-brand
+           transition-all duration-200
+           hover:bg-terracotta hover:text-white hover:scale-[1.02]
+           focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terracotta;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+
+  .container-brand {
+    @apply max-w-content mx-auto px-6;
+  }
+}
+
+/* Rispetta preferenze utente per animazioni ridotte */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .fade-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Skip link accessibilità */
+.skip-link {
+  @apply absolute -top-full left-4 z-[100] bg-terracotta text-white px-4 py-2 rounded-brand;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  @apply top-4;
+}

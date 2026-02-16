@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import ServiceBlock from '../components/ServiceBlock.astro';
+import FaqAccordion from '../components/FaqAccordion';
+import CtaBanner from '../components/CtaBanner.astro';
+import { SEO, SERVICES, FAQS } from '../lib/constants';
+---
+
+<BaseLayout title={SEO.servizi.title} description={SEO.servizi.description}>
+
+  <!-- Hero -->
+  <HeroSection
+    title="I Nostri Servizi"
+    subtitle="Tutto Ciò di Cui il Tuo Sorriso Ha Bisogno"
+    image="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=1200&q=80"
+  />
+
+  <!-- Blocchi Servizi Dettagliati -->
+  <section class="section-padding bg-cream">
+    <div class="container-brand space-y-16 md:space-y-24">
+      {SERVICES.map((service, index) => (
+        <div class="fade-in">
+          <ServiceBlock service={service} reversed={index % 2 !== 0} />
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section-padding bg-white fade-in">
+    <div class="container-brand max-w-3xl">
+      <div class="text-center mb-12">
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-charcoal mb-4">
+          Domande Frequenti
+        </h2>
+        <p class="text-charcoal-light">
+          Trova le risposte alle domande più comuni dei nostri pazienti.
+        </p>
+      </div>
+
+      <FaqAccordion client:visible items={FAQS} />
+    </div>
+  </section>
+
+  <!-- FAQ Schema JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQS.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  })} />
+
+  <!-- CTA Banner -->
+  <CtaBanner />
+
+</BaseLayout>

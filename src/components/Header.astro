@@ -1,0 +1,65 @@
+---
+import { SITE_NAME, NAV_LINKS } from '../lib/constants';
+import MobileMenu from './MobileMenu';
+
+const base = import.meta.env.BASE_URL ?? '/';
+const basePath = base.endsWith('/') ? base.slice(0, -1) : base;
+
+const resolveHref = (href: string) => {
+  return href === '/' ? `${basePath}/` : `${basePath}${href}`;
+};
+---
+
+<header
+  id="site-header"
+  class="sticky top-0 z-30 bg-white/95 backdrop-blur-sm transition-shadow duration-300"
+>
+  <div class="container-brand flex items-center justify-between h-16 md:h-20">
+    <!-- Logo -->
+    <a href={resolveHref('/')} class="flex items-center gap-2 text-charcoal hover:text-terracotta transition-colors">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M16 2C12 2 9 5 8 8C7 11 8 14 10 16C12 18 13 21 13 24C13 27 14 30 16 30C18 30 19 27 19 24C19 21 20 18 22 16C24 14 25 11 24 8C23 5 20 2 16 2Z" fill="#C2715B" stroke="#C2715B" stroke-width="1"/>
+        <path d="M16 8C15 8 14 9 14 10C14 11 15 12 16 12C17 12 18 11 18 10C18 9 17 8 16 8Z" fill="white"/>
+      </svg>
+      <span class="font-serif text-xl font-bold">{SITE_NAME}</span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex items-center gap-1" aria-label="Navigazione principale">
+      {NAV_LINKS.map((link) => (
+        <a
+          href={resolveHref(link.href)}
+          class="px-4 py-2 text-sm font-medium text-charcoal hover:text-terracotta transition-colors rounded-brand"
+        >
+          {link.label}
+        </a>
+      ))}
+      <a href={resolveHref('/contatti/')} class="ml-2 btn-primary !px-6 !py-2.5 text-sm">
+        Prenota Visita
+      </a>
+    </nav>
+
+    <!-- Mobile Menu (React island) -->
+    <MobileMenu
+      client:media="(max-width: 767px)"
+      links={NAV_LINKS as any}
+      ctaHref="/contatti/"
+      ctaLabel="Prenota Visita"
+      base={base}
+    />
+  </div>
+</header>
+
+<script>
+  // Shadow on scroll
+  const header = document.getElementById('site-header');
+  if (header) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 10) {
+        header.classList.add('shadow-md');
+      } else {
+        header.classList.remove('shadow-md');
+      }
+    }, { passive: true });
+  }
+</script>

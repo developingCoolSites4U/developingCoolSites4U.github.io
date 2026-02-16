@@ -1,0 +1,82 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  image?: string;
+  showCta?: boolean;
+  showTrustStrip?: boolean;
+  ctaPrimaryText?: string;
+  ctaPrimaryHref?: string;
+  ctaSecondaryText?: string;
+  ctaSecondaryHref?: string;
+  /** Righe della trust strip (es. "500+ Pazienti · 15+ Anni · 4.9★") */
+  trustText?: string;
+}
+
+import { CONTACT } from '../lib/constants';
+
+const {
+  title,
+  subtitle,
+  image = 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=80',
+  showCta = false,
+  showTrustStrip = false,
+  ctaPrimaryText = 'Prenota una Visita',
+  ctaPrimaryHref = '/contatti/',
+  ctaSecondaryText,
+  ctaSecondaryHref,
+  trustText,
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL ?? '/';
+const basePath = base.endsWith('/') ? base.slice(0, -1) : base;
+const resolveHref = (href: string) => href === '/' ? `${basePath}/` : `${basePath}${href}`;
+---
+
+<section class="relative min-h-[60vh] md:min-h-[70vh] flex items-center overflow-hidden">
+  <!-- Background Image -->
+  <div class="absolute inset-0">
+    <img
+      src={image}
+      alt=""
+      class="w-full h-full object-cover"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-charcoal/60"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-10 container-brand py-20 md:py-28 text-center text-white">
+    <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-6 max-w-4xl mx-auto leading-tight">
+      {title}
+    </h1>
+
+    {subtitle && (
+      <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-8">
+        {subtitle}
+      </p>
+    )}
+
+    {showCta && (
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+        <a href={resolveHref(ctaPrimaryHref)} class="btn-primary text-lg">
+          {ctaPrimaryText}
+        </a>
+        {ctaSecondaryText && ctaSecondaryHref && (
+          <a
+            href={ctaSecondaryHref}
+            class="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white text-white font-semibold rounded-brand transition-all duration-200 hover:bg-white hover:text-charcoal"
+          >
+            {ctaSecondaryText}
+          </a>
+        )}
+      </div>
+    )}
+
+    {showTrustStrip && trustText && (
+      <div class="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full text-sm md:text-base text-white/90">
+        {trustText}
+      </div>
+    )}
+  </div>
+</section>

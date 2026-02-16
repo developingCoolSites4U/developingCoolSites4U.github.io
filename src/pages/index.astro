@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import WhyChooseUs from '../components/WhyChooseUs.astro';
+import TestimonialCard from '../components/TestimonialCard.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { SEO, SERVICES, TESTIMONIALS, CONTACT } from '../lib/constants';
+
+const base = import.meta.env.BASE_URL ?? '/';
+const basePath = base.endsWith('/') ? base.slice(0, -1) : base;
+const resolveHref = (href: string) => href === '/' ? `${basePath}/` : `${basePath}${href}`;
+---
+
+<BaseLayout title={SEO.home.title} description={SEO.home.description}>
+
+  <!-- Hero -->
+  <HeroSection
+    title="Il Tuo Sorriso Merita le Migliori Cure"
+    subtitle="Uno studio dentistico moderno dove il tuo comfort viene prima di tutto."
+    image="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=80"
+    showCta={true}
+    ctaPrimaryText="Prenota una Visita"
+    ctaPrimaryHref="/contatti/"
+    ctaSecondaryText="Chiamaci Ora"
+    ctaSecondaryHref={`tel:${CONTACT.phoneRaw}`}
+    showTrustStrip={true}
+    trustText={`${CONTACT.patientsCount} Pazienti Soddisfatti · ${CONTACT.yearsActive}+ Anni di Esperienza · ${CONTACT.googleRating}★ su Google`}
+  />
+
+  <!-- Servizi in Evidenza -->
+  <section class="section-padding bg-cream fade-in">
+    <div class="container-brand">
+      <div class="text-center mb-12">
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-charcoal mb-4">
+          I Nostri Servizi
+        </h2>
+        <p class="text-charcoal-light max-w-2xl mx-auto">
+          Offriamo una gamma completa di cure odontoiatriche per tutta la famiglia, dalla prevenzione alla chirurgia avanzata.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {SERVICES.map((service) => (
+          <ServiceCard
+            title={service.title}
+            description={service.shortDescription}
+            icon={service.icon}
+            href={resolveHref('/servizi/')}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Perché Sceglierci -->
+  <WhyChooseUs />
+
+  <!-- Testimonianze -->
+  <section class="section-padding bg-cream fade-in">
+    <div class="container-brand">
+      <div class="text-center mb-12">
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-charcoal mb-4">
+          Cosa Dicono i Nostri Pazienti
+        </h2>
+        <p class="text-charcoal-light max-w-2xl mx-auto">
+          La fiducia dei nostri pazienti è la nostra più grande soddisfazione.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {TESTIMONIALS.slice(0, 3).map((t) => (
+          <TestimonialCard
+            text={t.text}
+            author={t.author}
+            rating={t.rating}
+            serviceTag={t.serviceTag}
+          />
+        ))}
+      </div>
+
+      <div class="text-center mt-8">
+        <a href={resolveHref('/recensioni/')} class="btn-outline">
+          Leggi Tutte le Recensioni
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <CtaBanner />
+
+</BaseLayout>

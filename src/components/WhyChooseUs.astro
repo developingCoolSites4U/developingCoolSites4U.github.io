@@ -1,0 +1,44 @@
+---
+import { FEATURES } from '../lib/constants';
+---
+
+<section class="section-padding bg-white fade-in">
+  <div class="container-brand">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+      <!-- Immagine -->
+      <div class="rounded-2xl overflow-hidden shadow-lg">
+        <img
+          src="https://images.unsplash.com/photo-1629909615184-74f495363b67?w=800&q=80"
+          alt="Il nostro studio dentistico moderno e accogliente"
+          class="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+
+      <!-- Contenuto -->
+      <div>
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-charcoal mb-8">
+          Perché Sceglierci
+        </h2>
+
+        <div class="space-y-6">
+          {FEATURES.map((feature) => (
+            <div class="flex gap-4">
+              <!-- Checkmark sage -->
+              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-sage/20 flex items-center justify-center mt-0.5">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8FA68A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-semibold text-charcoal text-lg mb-1">{feature.title}</h3>
+                <p class="text-charcoal-light text-sm leading-relaxed">{feature.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
